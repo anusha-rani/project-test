@@ -1,0 +1,17 @@
+node {
+    def app
+
+    stage('Clone repository') {
+      
+
+        checkout scm
+    }
+
+    stage('deploy'){
+        sh '''
+         docker rm -f $(docker ps -a -q) || true
+         docker pull registry.hub.docker.com/$dockerUser/$project:$tag
+         docker run -itd -p 3000:3000 registry.hub.docker.com/$dockerUser/$project:$tag
+        '''
+    }
+}
