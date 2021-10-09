@@ -1,11 +1,11 @@
-FROM node:12.13.0-alpine as build 
-WORKDIR /app
+FROM node:carbon
+# Create app directory
+WORKDIR /usr/src/app
+# Install app dependencies
 COPY package*.json ./
-RUN npm install 
+RUN npm install
+# Copy app source code
 COPY . .
-RUN npm run build
-
-FROM nginx 
-EXPOSE 3000
-COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /app/build /usr/share/nginx/html
+#Expose port and start application
+EXPOSE 8080
+CMD [ "npm", "start" ]
